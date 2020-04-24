@@ -1,1 +1,83 @@
-Hello sick World!
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico"-->
+
+    <title>Covid Floorplan</title>
+
+    <!--link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/"-->
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body style="margin-top: 50px;">
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="#">COVID-19 Floorplan</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main role="main" class="container" style="padding-top: 20px;">
+
+    
+         <div class="row">
+          <div class="col">
+            <h1>COVID-19 Floorplan</h1>
+            <p class="lead">Just enter your classroom's usable space and select the amount of social distancing between students.  We will automatically generate the most efficient floorplan for you to maximize the amount of students that can fit.<br><br>You can download and save it to quickly setup your new floorplan.
+            </p>
+            <hr>
+        </div>
+
+</div>
+<form>
+
+     <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="usableSpaceLength">Usable Space Length (In Inches)</label>
+            <input type="num" class="form-control" id="usableSpaceLength" placeholder="240">
+        </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label for="usableSpaceWidth">Usable Space Width (In Inches)</label>
+        <input type="num" class="form-control" id="usableSpaceWidth" placeholder="240">
+    </div>
+</div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="form-group">
+            <label for="socialDistancing">Social Distancing (In Feet)</label>
+            <input type="num" class="form-control" id="socialDistancing" placeholder="6">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <button type="submit" class="btn btn-primary mb-2">Get My Floorplan</button>
+    </div>
+</div>
+</form>
+
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"><\/script>')</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/js/bootstrap.min.js"></script>
+</body>
+</html>
