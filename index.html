@@ -23,6 +23,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
+
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
@@ -34,7 +35,7 @@
 
     <main role="main" class="container" style="padding-top: 20px;">
 
-    
+
          <div class="row">
           <div class="col">
             <h1>COVID-19 Floorplan</h1>
@@ -44,27 +45,28 @@
         </div>
 
 </div>
-<form>
+<form id="covid-floorplan">
 
      <div class="row">
+       <div class="col">
+         <div class="form-group">
+           <label for="usableSpaceWidth">Usable Space Width (In Inches)</label>
+           <input type="num" name="usableSpaceWidth" required class="form-control" id="usableSpaceWidth" placeholder="240">
+       </div>
+     </div>
+
         <div class="col">
           <div class="form-group">
             <label for="usableSpaceLength">Usable Space Length (In Inches)</label>
-            <input type="num" class="form-control" id="usableSpaceLength" placeholder="240">
+            <input type="num" name="usableSpaceLength" required class="form-control" id="usableSpaceLength" placeholder="240">
         </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label for="usableSpaceWidth">Usable Space Width (In Inches)</label>
-        <input type="num" class="form-control" id="usableSpaceWidth" placeholder="240">
-    </div>
 </div>
 </div>
 <div class="row">
     <div class="col">
         <div class="form-group">
             <label for="socialDistancing">Social Distancing (In Feet)</label>
-            <input type="num" class="form-control" id="socialDistancing" placeholder="6">
+            <input type="num" name="socialDistancing" required class="form-control" id="socialDistancing" placeholder="6">
         </div>
     </div>
 </div>
@@ -88,13 +90,74 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.0.16/svg.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/canvg/1.5/canvg.min.js"></script>
 <script type="text/javascript">
+
+  $(document).on("submit","#covid-floorplan",function(e){
+    e.preventDefault();
+    var usableWidthInches = this.usableSpaceWidth.value;
+    var usableLengthInches = this.usableSpaceLength.value;
+    var socialDistancingFeet = this.socialDistancing.value;
+
+    var socialDistancingInches = socialDistancingFeet * 12;
+    var canvasPadding = 100;
+    var circleDiameter = 10;
     var svgX = 1000;
-    var svgY = 1000;
-    var draw = SVG().addTo('#floorplan-graphic').size(svgX, svgY);
-    var rect = draw.rect(1000, 1000).attr({ fill: '#eee',stroke: '#000', 'stroke-width': 5 });
-    var text = draw.text("Here is a graphic for the floorplan with text over it w/ x of "+svgX+ "px and y of "+svgY+"px").attr({ x: 20, y: 60 })
+    var svgY = (usableLengthInches/usableWidthInches) * svgX;
+    var totalSpaces = 0;
+
+    var moveX = moveXOriginal = canvasPadding/2;
+    var moveY = canvasPadding/2;
+
+    // get the amount of spaces x
+    var spacesX = Math.floor(usableWidthInches / socialDistancingInches);
+    var spacesY = Math.floor(usableLengthInches / socialDistancingInches);
+    // get the amount of pixels betweeen each space.  this is 1000 / usableWidthInches
+    var moveXPixels = svgX / spacesX;
+    var moveYPixels = svgY / spacesY;
+    console.log("move x pixels: " + moveXPixels);
+    console.log("move y pixels: " + moveYPixels);
 
 
+    var canvasSizeX = svgX + canvasPadding;
+    var canvasSizeY = svgY + canvasPadding;
+
+    $("#floorplan-graphic").empty();
+
+    var draw = SVG().addTo('#floorplan-graphic').size(canvasSizeX, canvasSizeY);
+    draw.rect(canvasSizeX, canvasSizeY).attr({ fill: '#fff',stroke: '#ccc', 'stroke-width': 2 });
+    draw.rect(svgX, svgY).attr({ fill: '#ddd',stroke: '#000', 'stroke-width': 2 }).move(canvasPadding/2,canvasPadding/2);
+    draw.text("<- "+usableLengthInches+ " inches ->").attr({ x: (canvasSizeX/2)-50, y: (canvasPadding/2)+5 });
+    draw.text("<- "+usableWidthInches+ " inches ->").attr({ x: (canvasPadding/2)-50, y: (canvasSizeY/2)+5 }).transform({ rotate: -90});
+
+
+    for(var i = 0; i <= spacesX; i++){
+      for(var j = 0; j <= spacesY; j++){
+        draw.circle(circleDiameter).move(moveX, moveY);
+        moveX += moveXPixels;
+        console.log("move x,y: " + moveX+","+moveY);
+        totalSpaces++;
+      }
+      moveX = moveXOriginal
+      moveY += moveYPixels;
+      /*
+      draw.circle(circleDiameter).move(moveX, moveY);
+      moveX += moveXPixels;
+
+      //moveY += 100;
+
+      */
+    }
+
+    draw.text("Total Spaces: " + totalSpaces).attr({ x: 0, y: 0 });
+    console.log("total spaces:"+totalSpaces);
+
+
+    //draw.text("Here is a graphic for the floorplan with text over it w/ x of "+canvasSizeX+ "px and y of "+canvasSizeY+"px").attr({ x: 20, y: 60 });
+    //draw.text("Here's the info from the prompt:  " + usableSpaceWidth).attr({ x: 20, y: 80 });
+    //draw.circle(10).move(150, 150);
+  });
+
+
+/*
     $("#download").click(function() {
 
 // the canvg call that takes the svg xml and converts it to a canvas
@@ -105,7 +168,10 @@ var canvas = document.getElementById("canvas");
 var img = canvas.toDataURL("image/png");
 
 // do what you want with the base64, write to screen, post to server, etc...
+
 });
+*/
+
 </script>
 
 
